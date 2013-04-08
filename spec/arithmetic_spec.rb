@@ -42,7 +42,7 @@ describe Arithmetic do
   describe ".primes" do
 
     it "finds a list of prime numbers in a given range" do
-      expect(Arithmetic.primes(20, 30)).to eq [23, 27 ,29]
+      expect(Arithmetic.primes(11, 30)).to eq [11, 13, 17, 19, 23, 29]
     end
   end
 
@@ -98,7 +98,7 @@ describe Arithmetic do
     end
 
     it "uses the most primitive method" do
-      Arithmetic.should_receive(:coprime?).and_call_original
+      Arithmetic.should_receive(:coprime?).at_least(:once).and_call_original
       Arithmetic.totient_phi(10)
     end
   end
