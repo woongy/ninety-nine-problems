@@ -34,13 +34,14 @@ module Logic
   #   huffman_assign_code([:a, [[:c, :b], [[:f, :e], :d]]])
   #   # => [:a, "0", :b, "101", :c, "001", :d, "111", :e, "1011", :f, "0011"]
   def self.huffman_assign_code(node, prefix = "")
-    if node.respond_to?(:first)
+    case node
+    when Symbol
+      [node, prefix]
+    else
       [
         huffman_assign_code(node.first, prefix + "0"),
         huffman_assign_code(node.last, prefix + "1")
       ].sort.flatten
-    else
-      [node, prefix]
     end
   end
 
