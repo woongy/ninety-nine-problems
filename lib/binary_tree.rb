@@ -13,6 +13,22 @@ module BinaryTree
   end
 
   def self.cbal_trees(n, sym = :x)
+    if n == 0
+      [:nil]
+    else
+      n -= 1
+      if n.even?
+        t = cbal_trees(n/2)
+        t.product(t).map { |left_and_right| [sym, *left_and_right] }
+      else
+        t = cbal_trees(n/2)
+        u = cbal_trees(n - n/2)
+        [
+          *t.product(u),
+          *u.product(t)
+        ].map { |left_and_right| [sym, *left_and_right] }
+      end
+    end
   end
 
   def self.mirror?(t, u)
@@ -57,9 +73,23 @@ module BinaryTree
   end
 
   def self.sym_cbal_trees(n, sym = :x)
+    cbal_trees(n, sym).select { |t| symmetric?(t) }
   end
 
   def self.hbal_trees(h, sym = :x)
+    if h == 0
+      [:nil]
+    elsif h == 1
+      [[sym, :nil, :nil]]
+    else
+      t = hbal_trees(h - 1)
+      u = hbal_trees(h - 2)
+      [
+        *t.product(t),
+        *t.product(u),
+        *u.product(t)
+      ].map { |left_and_right| [sym, *left_and_right] }
+    end
   end
 
   def self.hbal_min_nodes(h)
@@ -105,6 +135,11 @@ module BinaryTree
   end
 
   def self.layout_binary_tree(t, method)
+    case method
+    when :inorder
+    when :wide
+    when :compact
+    end
   end
 
   def self.tree_to_string(t)
@@ -139,11 +174,20 @@ module BinaryTree
     elsif left == :nil && right == :nil
       "#{root}"
     else
-      "#{root}#{preorder(left)}#{preorder(right)}"
+      "#{root}" << preorder(left) << preorder(right)
     end
   end
 
   def self.inorder(t)
+    root, left, right = t
+
+    if root == :nil
+      ""
+    elsif left == :nil && right == :nil
+      "#{root}"
+    else
+      inorder(left) << "#{root}" << inorder(right)
+    end
   end
 
   def self.pre_in_tree(p, i)

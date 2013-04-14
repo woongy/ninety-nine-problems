@@ -78,12 +78,43 @@ describe BinaryTree do
 
   describe ".sym_cbal_trees" do
 
-    it "generates a list of symmetric and completely balanced binary trees for a given number of nodes"
+    let(:expected) do
+      [
+        [:x,
+          [:x, :nil, [:x, :nil, :nil]],
+          [:x, [:x, :nil, :nil], :nil]],
+        [:x,
+          [:x, [:x, :nil, :nil], :nil],
+          [:x, :nil, [:x, :nil, :nil]]]
+      ]
+    end
+
+    it "generates a list of symmetric and completely balanced binary trees for a given number of nodes" do
+      expect(BinaryTree.sym_cbal_trees(5)).to eq expected
+    end
+
+    it "generates 256 symmetric and completely balanced binary trees with 57 nodes" do
+      expect(BinaryTree.sym_cbal_trees(57).count).to eq 256
+    end
+
+    it "generates 0 symmetric and completely balanced binary trees with an even number of nodes" do
+      expect(BinaryTree.sym_cbal_trees(10).count).to eq 0
+    end
   end
 
   describe ".hbal_trees" do
 
-    it "generates a list of height-balanced binary trees for a given height"
+    let(:expected) do
+      [
+        [:x, [:x, :nil, :nil], [:x, :nil, :nil]],
+        [:x, [:x, :nil, :nil], :nil],
+        [:x, :nil, [:x, :nil, :nil]]
+      ]
+    end
+
+    it "generates a list of height-balanced binary trees for a given height" do
+      expect(BinaryTree.hbal_trees(2)).to eq expected
+    end
   end
 
   describe ".hbal_min_nodes" do
@@ -160,6 +191,17 @@ describe BinaryTree do
 
   describe ".layout_binary_tree" do
 
+    context "when layout strategy is :inorder" do
+
+    end
+
+    context "when layout strategy is :wide" do
+
+    end
+
+    context "when layout strategy is :compact" do
+
+    end
   end
 
   describe ".tree_string" do
@@ -206,7 +248,15 @@ describe BinaryTree do
 
   describe ".inorder" do
 
-    it "constructs the inorder sequence of a given binary tree"
+    let(:t) do
+      ["a",
+        ["b", ["d", :nil, :nil], ["e", :nil, :nil]],
+        ["c", :nil, ["f", ["g", :nil, :nil], :nil]]]
+    end
+
+    it "constructs the inorder sequence of a given binary tree" do
+      expect(BinaryTree.inorder(t)).to eq "dbeacgf"
+    end
   end
 
   describe ".pre_in_tree" do
