@@ -1,3 +1,9 @@
+module Kernel
+  def T(*args)
+    args
+  end
+end
+
 module MultiwayTree
 
   def self.forest?(f)
@@ -13,6 +19,6 @@ module MultiwayTree
   def self.tree?(t)
     root, forest = t
 
-    forest?(forest)
+    !root.nil? && forest?(forest)
   end
 end
