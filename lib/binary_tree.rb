@@ -1,3 +1,9 @@
+module Kernel
+  def T(*args)
+    args
+  end
+end
+
 module BinaryTree
 
   def self.tree?(t)
@@ -14,19 +20,19 @@ module BinaryTree
 
   def self.cbal_trees(n, sym = :x)
     if n == 0
-      [:nil]
+      T(:nil)
     else
       n -= 1
       if n.even?
         t = cbal_trees(n/2)
-        t.product(t).map { |left_and_right| [sym, *left_and_right] }
+        t.product(t).map { |left_and_right| T(sym, *left_and_right) }
       else
         t = cbal_trees(n/2)
         u = cbal_trees(n - n/2)
         [
           *t.product(u),
           *u.product(t)
-        ].map { |left_and_right| [sym, *left_and_right] }
+        ].map { |left_and_right| T(sym, *left_and_right) }
       end
     end
   end
@@ -58,12 +64,12 @@ module BinaryTree
     root, left, right = t
 
     if root == :nil
-      [value, :nil, :nil]
+      T(value, :nil, :nil)
     else
       if value < root
-        [root, add(left, value), right]
+        T(root, add(left, value), right)
       elsif root < value
-        [root, left, add(right, value)]
+        T(root, left, add(right, value))
       end
     end
   end
@@ -80,7 +86,7 @@ module BinaryTree
     if h == 0
       [:nil]
     elsif h == 1
-      [[sym, :nil, :nil]]
+      [T(sym, :nil, :nil)]
     else
       t = hbal_trees(h - 1)
       u = hbal_trees(h - 2)
@@ -88,7 +94,7 @@ module BinaryTree
         *t.product(t),
         *t.product(u),
         *u.product(t)
-      ].map { |left_and_right| [sym, *left_and_right] }
+      ].map { |left_and_right| T(sym, *left_and_right) }
     end
   end
 

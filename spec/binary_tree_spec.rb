@@ -9,8 +9,8 @@ describe BinaryTree do
 
       [
         :nil,
-        [:a, :nil, :nil],
-        [:a, [:b, :nil, :nil], :nil]
+        T(:a, :nil, :nil),
+        T(:a, T(:b, :nil, :nil), :nil)
       ].each do |t|
 
         it "returns true" do
@@ -21,7 +21,7 @@ describe BinaryTree do
 
     context "when given a non-tree" do
 
-      let(:t) { [:a, [:b, :nil, :nil]] }
+      let(:t) { T(:a, T(:b, :nil, :nil)) }
 
       it "returns false" do
         expect(BinaryTree.tree?(t)).to be_false
@@ -33,10 +33,10 @@ describe BinaryTree do
 
     let(:expected) do
       [
-        [:x, [:x, :nil, :nil], [:x, :nil, [:x, :nil, :nil]]],
-        [:x, [:x, :nil, :nil], [:x, [:x, :nil, :nil], :nil]],
-        [:x, [:x, :nil, [:x, :nil, :nil]], [:x, :nil, :nil]],
-        [:x, [:x, [:x, :nil, :nil], :nil], [:x, :nil, :nil]]
+        T(:x, T(:x, :nil, :nil), T(:x, :nil, T(:x, :nil, :nil))),
+        T(:x, T(:x, :nil, :nil), T(:x, T(:x, :nil, :nil), :nil)),
+        T(:x, T(:x, :nil, T(:x, :nil, :nil)), T(:x, :nil, :nil)),
+        T(:x, T(:x, T(:x, :nil, :nil), :nil), T(:x, :nil, :nil))
       ]
     end
 
@@ -49,7 +49,7 @@ describe BinaryTree do
 
     context "when given a symmetric tree" do
 
-      let(:t) { [:a, [:b, [:c, :nil, :nil], :nil], [:d, :nil, [:e, :nil, :nil]]] }
+      let(:t) { T(:a, T(:b, T(:c, :nil, :nil), :nil), T(:d, :nil, T(:e, :nil, :nil))) }
 
       it "returns true" do
         expect(BinaryTree.symmetric?(t)).to be_true
@@ -58,7 +58,7 @@ describe BinaryTree do
 
     context "when given an asymmetric tree" do
 
-      let(:t) { [:a, [:b, [:c, :nil, :nil], :nil], [:d, [:e, :nil, :nil], :nil]] }
+      let(:t) { T(:a, T(:b, T(:c, :nil, :nil), :nil), T(:d, T(:e, :nil, :nil), :nil)) }
 
       it "returns false" do
         expect(BinaryTree.symmetric?(t)).to be_false
@@ -69,7 +69,7 @@ describe BinaryTree do
   describe ".construct" do
 
     let(:input) { [3, 2, 5, 7, 1] }
-    let(:expected) { [3, [2, [1, :nil, :nil], :nil], [5, :nil, [7, :nil, :nil]]] }
+    let(:expected) { T(3, T(2, T(1, :nil, :nil), :nil), T(5, :nil, T(7, :nil, :nil))) }
 
     it "constructs a binary search from a list of integer numbers" do
       expect(BinaryTree.construct(input)).to eq expected
@@ -80,12 +80,12 @@ describe BinaryTree do
 
     let(:expected) do
       [
-        [:x,
-          [:x, :nil, [:x, :nil, :nil]],
-          [:x, [:x, :nil, :nil], :nil]],
-        [:x,
-          [:x, [:x, :nil, :nil], :nil],
-          [:x, :nil, [:x, :nil, :nil]]]
+        T(:x,
+          T(:x, :nil, T(:x, :nil, :nil)),
+          T(:x, T(:x, :nil, :nil), :nil)),
+        T(:x,
+          T(:x, T(:x, :nil, :nil), :nil),
+          T(:x, :nil, T(:x, :nil, :nil)))
       ]
     end
 
@@ -106,9 +106,9 @@ describe BinaryTree do
 
     let(:expected) do
       [
-        [:x, [:x, :nil, :nil], [:x, :nil, :nil]],
-        [:x, [:x, :nil, :nil], :nil],
-        [:x, :nil, [:x, :nil, :nil]]
+        T(:x, T(:x, :nil, :nil), T(:x, :nil, :nil)),
+        T(:x, T(:x, :nil, :nil), :nil),
+        T(:x, :nil, T(:x, :nil, :nil))
       ]
     end
 
@@ -135,9 +135,9 @@ describe BinaryTree do
   describe ".count_leaves" do
 
     let(:t) do
-      [:a,
-        [:b, [:d, :nil, :nil], [:e, :nil, :nil]],
-        [:c, :nil, [:f, [:g, :nil, :nil], :nil]]]
+      T(:a,
+        T(:b, T(:d, :nil, :nil), T(:e, :nil, :nil)),
+        T(:c, :nil, T(:f, T(:g, :nil, :nil), :nil)))
     end
 
     it "counts the leaves of a binary tree" do
@@ -148,9 +148,9 @@ describe BinaryTree do
   describe ".leaves" do
 
     let(:t) do
-      [:a,
-        [:b, [:d, :nil, :nil], [:e, :nil, :nil]],
-        [:c, :nil, [:f, [:g, :nil, :nil], :nil]]]
+      T(:a,
+        T(:b, T(:d, :nil, :nil), T(:e, :nil, :nil)),
+        T(:c, :nil, T(:f, T(:g, :nil, :nil), :nil)))
     end
 
     it "collects the leaves of a binary tree in a list" do
@@ -161,9 +161,9 @@ describe BinaryTree do
   describe ".internals" do
 
     let(:t) do
-      [:a,
-        [:b, [:d, :nil, :nil], [:e, :nil, :nil]],
-        [:c, :nil, [:f, [:g, :nil, :nil], :nil]]]
+      T(:a,
+        T(:b, T(:d, :nil, :nil), T(:e, :nil, :nil)),
+        T(:c, :nil, T(:f, T(:g, :nil, :nil), :nil)))
     end
 
     it "collects the inernal nodes of a binary tree in a list" do
@@ -174,9 +174,9 @@ describe BinaryTree do
   describe ".at_level" do
 
     let(:t) do
-      [:a,
-        [:b, [:d, :nil, :nil], [:e, :nil, :nil]],
-        [:c, :nil, [:f, [:g, :nil, :nil], :nil]]]
+      T(:a,
+        T(:b, T(:d, :nil, :nil), T(:e, :nil, :nil)),
+        T(:c, :nil, T(:f, T(:g, :nil, :nil), :nil)))
     end
 
     it "collects the nodes at a given level in a list" do
@@ -209,9 +209,9 @@ describe BinaryTree do
     context "when given a tree" do
 
       let(:t) do
-        [:a,
-          [:b, [:d, :nil, :nil], [:e, :nil, :nil]],
-          [:c, :nil, [:f, [:g, :nil, :nil], :nil]]]
+        T(:a,
+          T(:b, T(:d, :nil, :nil), T(:e, :nil, :nil)),
+          T(:c, :nil, T(:f, T(:g, :nil, :nil), :nil)))
       end
 
       it "returns its string representation" do
@@ -222,9 +222,9 @@ describe BinaryTree do
     context "when given a string" do
 
       let(:expected) do
-        ["a",
-          ["b", ["d", :nil, :nil], ["e", :nil, :nil]],
-          ["c", :nil, ["f", ["g", :nil, :nil], :nil]]]
+        T("a",
+          T("b", T("d", :nil, :nil), T("e", :nil, :nil)),
+          T("c", :nil, T("f", T("g", :nil, :nil), :nil)))
       end
 
       it "constructs the tree represented by it" do
@@ -236,9 +236,9 @@ describe BinaryTree do
   describe ".preorder" do
 
     let(:t) do
-      ["a",
-        ["b", ["d", :nil, :nil], ["e", :nil, :nil]],
-        ["c", :nil, ["f", ["g", :nil, :nil], :nil]]]
+      T("a",
+        T("b", T("d", :nil, :nil), T("e", :nil, :nil)),
+        T("c", :nil, T("f", T("g", :nil, :nil), :nil)))
     end
 
     it "constructs the preorder sequence of a given binary tree" do
@@ -249,9 +249,9 @@ describe BinaryTree do
   describe ".inorder" do
 
     let(:t) do
-      ["a",
-        ["b", ["d", :nil, :nil], ["e", :nil, :nil]],
-        ["c", :nil, ["f", ["g", :nil, :nil], :nil]]]
+      T("a",
+        T("b", T("d", :nil, :nil), T("e", :nil, :nil)),
+        T("c", :nil, T("f", T("g", :nil, :nil), :nil)))
     end
 
     it "constructs the inorder sequence of a given binary tree" do
@@ -269,9 +269,9 @@ describe BinaryTree do
     context "when given a tree" do
 
       let(:t) do
-        [:a,
-          [:b, [:d, :nil, :nil], [:e, :nil, :nil]],
-          [:c, :nil, [:f, [:g, :nil, :nil], :nil]]]
+        T(:a,
+          T(:b, T(:d, :nil, :nil), T(:e, :nil, :nil)),
+          T(:c, :nil, T(:f, T(:g, :nil, :nil), :nil)))
       end
 
       it "returns its dotstring representation" do
@@ -282,9 +282,9 @@ describe BinaryTree do
     context "when given a dotstring" do
 
       let(:expected) do
-        ["a",
-          ["b", ["d", :nil, :nil], ["e", :nil, :nil]],
-          ["c", :nil, ["f", ["g", :nil, :nil], :nil]]]
+        T("a",
+          T("b", T("d", :nil, :nil), T("e", :nil, :nil)),
+          T("c", :nil, T("f", T("g", :nil, :nil), :nil)))
       end
 
       it "constructs the tree represented by it" do
