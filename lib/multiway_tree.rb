@@ -21,4 +21,10 @@ module MultiwayTree
 
     !root.nil? && forest?(forest)
   end
+
+  def self.nnodes(t)
+    root, forest = t
+
+    forest.empty? ? 1 : forest.inject(1) { |n, t| n + nnodes(t) }
+  end
 end

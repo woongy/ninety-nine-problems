@@ -23,4 +23,17 @@ describe MultiwayTree do
       end
     end
   end
+
+  describe ".nnodes" do
+
+    {
+      T(:a,[T(:f, [T(:g, [])]), T(:c, []), T(:b, [T(:d, []), T(:e, [])])]) => 7,
+      T(:a, [T(:f, [])]) => 2
+    }.each do |t, expected|
+
+      it "counts the nodes of a multiway tree" do
+        expect(MultiwayTree.nnodes(t)).to eq expected
+      end
+    end
+  end
 end
