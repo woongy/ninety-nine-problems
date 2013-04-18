@@ -27,4 +27,26 @@ module MultiwayTree
 
     forest.empty? ? 1 : forest.inject(1) { |n, t| n + nnodes(t) }
   end
+
+  def self.tree_to_string(t)
+    root, forest = t
+
+    if forest.nil?
+      "#{root}^"
+    else
+      "#{root}" << forest.map { |f| tree_to_string(f) }.join << "^"
+    end
+  end
+
+  def self.string_to_tree(s)
+  end
+
+  def self.tree_string(t_or_s)
+    case t_or_s
+    when Array
+      tree_to_string t_or_s
+    when String
+      string_to_tree t_or_s
+    end
+  end
 end
